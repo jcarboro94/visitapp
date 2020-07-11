@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:visitapp/constants.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class ConfiguracionPage extends StatefulWidget {
   @override
@@ -7,6 +9,17 @@ class ConfiguracionPage extends StatefulWidget {
 }
 
 class _ConfiguracionPageState extends State<ConfiguracionPage> {
+  File _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = File(pickedFile.path);
+    });
+  }
+
   String _name;
   String _description;
   String _phoneNumber;
@@ -18,6 +31,30 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
   Color _thirdColor;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  Widget _buildImageField() {
+    return GestureDetector(
+      child: _image == null
+          ? CircleAvatar(
+              child: Icon(Icons.add_a_photo),
+              backgroundColor: kDarkBlue,
+              radius: 50,
+            )
+          : CircleAvatar(
+//              child: Image.file(_image),
+//              backgroundImage: NetworkImage(
+//                  'https://media-exp1.licdn.com/dms/image/C5603AQFh6ytryTUsaA/profile-displayphoto-shrink_200_200/0?e=1598486400&v=beta&t=vu4Bz7Gpo2zSfAaLH4eWL6BlxfqU6Uz1MB8aM-okVKk'),
+              backgroundImage: AssetImage(_image.path),
+              radius: 50,
+              backgroundColor: kDarkBlue,
+            ),
+      onTap: () {
+        print('I HAVE '
+            'BEEN TAPPED!');
+        getImage();
+      },
+    );
+  }
 
   Widget _buildNameField() {
     return TextFormField(
@@ -145,58 +182,64 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+//      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: kDarkBlue,
         title: Text('Edita tu tarjeta'),
       ),
       body: SafeArea(
-        child: Container(
-          color: Colors.white,
-          margin: EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _buildNameField(),
-                _buildDescriptionField(),
-                _buildPhoneNumberField(),
-                _buildEmailField(),
-                _buildURLField(),
-                _buildAddressField(),
-                SizedBox(
-                  height: 100,
-                ),
-                RaisedButton(
-                  child: Text(
-                    'Guardar',
-                    style: TextStyle(color: kYellow, fontSize: 15),
+        child: SingleChildScrollView(
+          child: Container(
+            color: Colors.white,
+            margin: EdgeInsets.all(24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _buildImageField(),
+                  _buildNameField(),
+                  _buildDescriptionField(),
+                  _buildPhoneNumberField(),
+                  _buildEmailField(),
+                  _buildURLField(),
+                  _buildAddressField(),
+                  SizedBox(
+                    height: 100,
                   ),
-                  color: kDarkBlue,
-                  onPressed: () {
-                    print('SAVED');
-                    if (!_formKey.currentState.validate()) {
-                      return;
-                    }
-                    _formKey.currentState.save();
-                    print(_name);
-                    print(_description);
-                    print(_phoneNumber);
-                    print(_email);
-                    print(_url);
-                    print(_address);
-                    List<String> list = List<String>();
-                    list.add(_name);
-                    list.add(_description);
-                    list.add(_phoneNumber);
-                    list.add(_email);
-                    list.add(_url);
-                    list.add(_address);
+                  RaisedButton(
+                    child: Text(
+                      'Guardar',
+                      style: TextStyle(color: kYellow, fontSize: 15),
+                    ),
+                    color: kDarkBlue,
+                    onPressed: () {
+                      print('SAVED');
+                      if (!_formKey.currentState.validate()) {
+                        return;
+                      }
+                      _formKey.currentState.save();
+                      print(_name);
+                      print(_description);
+                      print(_phoneNumber);
+                      print(_email);
+                      print(_url);
+                      print(_address);
 
-                    Navigator.pop(context, list);
-                  },
-                )
-              ],
+                      List<String> list = List<String>();
+                      list.add(_name);
+                      list.add(_description);
+                      list.add(_phoneNumber);
+                      list.add(_email);
+                      list.add(_url);
+                      list.add(_address);
+                      list.add(_image.path);
+
+                      Navigator.pop(context, list);
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         ),

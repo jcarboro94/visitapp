@@ -34,6 +34,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String _address = 'Carrer del Ajuntament, 18, Barceona';
 
+  String _imagePath = '';
+
+  CircleAvatar circleAvatar() {
+    if (_imagePath != '') {
+      return CircleAvatar(
+        backgroundImage: AssetImage(_imagePath),
+      );
+    } else {
+      return CircleAvatar(
+        backgroundImage: (NetworkImage(
+            'https://is3-ssl.mzstatic.com/image/thumb/Purple123/v4/8a/51/76/8a517657-7b3b-071c-03ce-90efccac5c2d/source/512x512bb.jpg')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,14 +60,15 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: kDarkBlue),
-              accountName: Text('Appsesoria'),
-              accountEmail: Text('info@appsesoria.com'),
-              currentAccountPicture: CircleAvatar(
+                decoration: BoxDecoration(color: kDarkBlue),
+                accountName: Text('Appsesoria'),
+                accountEmail: Text('info@appsesoria.com'),
+                currentAccountPicture:
+                    circleAvatar() /*CircleAvatar(
                 backgroundImage: (NetworkImage(
                     'https://is3-ssl.mzstatic.com/image/thumb/Purple123/v4/8a/51/76/8a517657-7b3b-071c-03ce-90efccac5c2d/source/512x512bb.jpg')),
-              ),
-            ),
+              ),*/
+                ),
             ListTile(
               title: Text('Configurar tarjeta'),
               onTap: () async {
@@ -73,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     _email = contactDetails[3];
                     _url = contactDetails[4];
                     _address = contactDetails[5];
+                    _imagePath = contactDetails[6];
                   });
                 }
               },
@@ -103,16 +120,24 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            SizedBox(
+              height: 25,
+            ),
             Container(
               height: 100,
               width: 100,
               child: Center(
-                child: CircleAvatar(
+                child: Container(
+                  child: circleAvatar(),
+                  height: 100,
+                  width: 100,
+                ),
+                /*CircleAvatar(
                   radius: 50,
 //                    backgroundColor: Colors.red,
                   backgroundImage: NetworkImage(
                       'https://is3-ssl.mzstatic.com/image/thumb/Purple123/v4/8a/51/76/8a517657-7b3b-071c-03ce-90efccac5c2d/source/512x512bb.jpg'),
-                ),
+                ),*/
               ),
             ),
             Container(
