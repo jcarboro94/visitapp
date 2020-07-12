@@ -17,6 +17,7 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
 
     setState(() {
       _image = File(pickedFile.path);
+      print(pickedFile.path);
     });
   }
 
