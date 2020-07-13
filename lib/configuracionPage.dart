@@ -22,6 +22,8 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
   }
 
   String _name;
+  String _firstName;
+  String _lastName;
   String _description;
   String _phoneNumber;
   String _email;
@@ -30,6 +32,25 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
   Color _mainColor;
   Color _secondColor;
   Color _thirdColor;
+
+  ConfiguracionPage(
+      String name,
+      String firstName,
+      String lastName,
+      String description,
+      String phoneNumber,
+      String email,
+      String url,
+      String address) {
+    this._name = name;
+    this._firstName = firstName;
+    this._lastName = lastName;
+    this._description = description;
+    this._phoneNumber = phoneNumber;
+    this._email = email;
+    this._url = url;
+    this._address = address;
+  }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -68,6 +89,23 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
       },
       onSaved: (String value) {
         _name = value;
+        var firstAndLast = value.split(" ");
+        if (firstAndLast.length > 1) {
+          _firstName = firstAndLast[0];
+          firstAndLast.removeAt(0);
+          _lastName = firstAndLast.join(" ");
+        } else {
+          _firstName = firstAndLast[0];
+          _lastName = '';
+        }
+
+//        if (value.split("\\w+").length > 1) {
+//          _firstName = value.substring(value.lastIndexOf(" ") + 1);
+//          _lastName = value.substring(0, value.lastIndexOf(' '));
+//        } else {
+//          _firstName = value;
+//          _lastName = '';
+//        }
       },
     );
   }
@@ -110,6 +148,8 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
   Widget _buildEmailField() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Correo electrónico'),
+      keyboardType: TextInputType.emailAddress,
+//      textInputAction: TextInputAction.continueAction,
       validator: (String value) {
         if (value.isEmpty) {
           return 'Correo electrónico es obligatorio';
@@ -130,6 +170,7 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
   Widget _buildURLField() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Página Web'),
+      keyboardType: TextInputType.url,
       validator: (String value) {
         if (value.isEmpty) {
           return 'Página web es obligatoria';
@@ -229,6 +270,8 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
 
                       List<String> list = List<String>();
                       list.add(_name);
+                      list.add(_firstName);
+                      list.add(_lastName);
                       list.add(_description);
                       list.add(_phoneNumber);
                       list.add(_email);

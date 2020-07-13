@@ -18,6 +18,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:vcard/vcard.dart';
 
 void main() {
   runApp(MyApp());
@@ -37,17 +38,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String _name = "Jordi Carbó Rodríguez";
+  String _name = "VisitApp";
+  String _firstName = "Visit";
+  String _lastName = "App";
 
-  String _description = "iOS and Flutter Developer";
+  String _description = "Share it, Keep it";
 
-  String _phoneNumber = "623198118";
+  String _phoneNumber = "987654321";
 
-  String _email = "info@appsesoria.com";
+  String _email = "info@visitapp.com";
 
-  String _url = 'www.appsesoria.com';
+  String _url = 'www.visitapp.com';
 
-  String _address = 'Carrer del Ajuntament, 18, Barceona';
+  String _address = 'Calle Wallaby, 42, Sydney';
 
   String _imagePath = '';
 
@@ -58,8 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     } else {
       return CircleAvatar(
-        backgroundImage: (NetworkImage(
-            'https://is3-ssl.mzstatic.com/image/thumb/Purple123/v4/8a/51/76/8a517657-7b3b-071c-03ce-90efccac5c2d/source/512x512bb.jpg')),
+        backgroundImage: AssetImage('assets/appstore.png'),
       );
     }
   }
@@ -94,6 +96,31 @@ class _HomeScreenState extends State<HomeScreen> {
 //    final directory = (await getApplicationDocumentsDirectory()).path;
 //    File imgFile = new File('$directory/screenshot.png');
 //    imgFile.writeAsBytes(pngBytes);
+  }
+
+  String generateVcard() {
+    var vCard = VCard();
+    vCard.firstName = _firstName;
+    vCard.middleName = '';
+    vCard.lastName = _lastName;
+    vCard.organization = '';
+//    vCard.photo.embedFromFile(_imagePath);
+//    if (_imagePath != '') {
+//      vCard.photo.embedFromFile(
+//              _imagePath) /*attachFromUrl(
+//        'https://www.activspaces.com/wp-content/uploads/2019/01/ActivSpaces-Logo_Dark.png',
+//        'PNG');*/
+//          ;
+//    }
+    vCard.workAddress.label = _address;
+    vCard.workPhone = _phoneNumber;
+//    vCard.birthday = DateTime.now();
+    vCard.jobTitle = _description;
+    vCard.url = _url;
+//    vCard.note = 'Notes on contact';
+    print('THE VCARD IS:');
+    print(vCard.getFormattedString());
+    return vCard.getFormattedString();
   }
 
   @override
@@ -131,12 +158,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (contactDetails != null) {
                   setState(() {
                     _name = contactDetails[0];
-                    _description = contactDetails[1];
-                    _phoneNumber = contactDetails[2];
-                    _email = contactDetails[3];
-                    _url = contactDetails[4];
-                    _address = contactDetails[5];
-                    _imagePath = contactDetails[6];
+                    _firstName = contactDetails[1];
+                    _lastName = contactDetails[2];
+                    _description = contactDetails[3];
+                    _phoneNumber = contactDetails[4];
+                    _email = contactDetails[5];
+                    _url = contactDetails[6];
+                    _address = contactDetails[7];
+                    _imagePath = contactDetails[8];
                   });
                 }
               },
@@ -150,14 +179,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => CompartirPage(_url)),
+                    builder: (BuildContext context) => CompartirPage(
+                      generateVcard(),
+                    ),
+                  ),
                 );
               },
             ),
             ListTile(
-              title: Text('Tarjetas guardadas'),
+              title: Text('Sobre VisitApp'),
               onTap: () {
                 print('Going to the other page');
+                showAboutDialog(
+                    context: context,
+                    applicationName: 'VisitApp',
+                    applicationIcon: CircleAvatar(
+                      backgroundImage: AssetImage('assets/appstore.png'),
+//                      child: Image(
+//                        image: AssetImage('assets/appstore.png'),
+//                        height: 50,
+//                      ),
+                    ),
+                    applicationLegalese: 'VisitApp no tiene acceso ni, por '
+                        'supuesto almacena sus imágenes ni contactos.');
               },
             )
           ],
@@ -227,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: takeScreenShot,
+                onTap: takescrshot,
                 child: Card(
                     color: Colors.white,
                     margin: EdgeInsets.all(20),
