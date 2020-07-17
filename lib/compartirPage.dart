@@ -30,9 +30,9 @@ class CompartirPage extends StatelessWidget {
       return 'Hola! A continuación puedes ver mis datos de contacto:\n'
           'Nombre: ${finalVcard.firstName} ${finalVcard.lastName}\n'
           'Teléfono ${finalVcard.workPhone}\n'
-          'Correo electrónico${finalVcard.workEmail}\n'
+          'Correo electrónico ${finalVcard.workEmail}\n'
           'Página web ${finalVcard.url}\n'
-          'Dirección${finalVcard.homeAddress.label}';
+          'Dirección ${finalVcard.homeAddress.street}';
     }
   }
 

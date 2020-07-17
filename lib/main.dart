@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //        'PNG');*/
 //          ;
 //    }
-        vCard.workAddress.label = _address;
+        vCard.workAddress.street = _address;
     vCard.workEmail = _email;
     vCard.photo.attachFromUrl(_imagePath, 'PNG');
     vCard.workPhone = _phoneNumber;

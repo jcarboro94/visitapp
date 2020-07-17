@@ -217,13 +217,15 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
       ),
       cursorColor: kYellow,
       validator: (String value) {
-        if (value.isEmpty) {
-          return 'La descripción es obligatoria';
-        }
+//        if (value.isEmpty) {
+//          return 'La descripción es obligatoria';
+//        }
         return null;
       },
       onSaved: (String value) {
-        _description = value;
+        if (value != null) {
+          _description = value;
+        }
       },
     );
   }
@@ -342,13 +344,75 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
       ),
       cursorColor: kYellow,
       validator: (String value) {
-        if (value.isEmpty) {
-          return 'Dirección es obligatoria';
-        }
+//        if (value.isEmpty) {
+//          return 'Dirección es obligatoria';
+//        }
         return null;
       },
       onSaved: (String value) {
-        _address = value;
+        if (value != null) {
+          _address = value;
+        }
+      },
+    );
+  }
+
+  Widget _buildPostCodeField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelStyle: TextStyle(color: kDarkBlue),
+        labelText: 'Código Postal',
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kDarkBlue),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+      ),
+      cursorColor: kYellow,
+      validator: (String value) {
+//        if (value.isEmpty) {
+//          return 'Código Postal es obligatoria';
+//        }
+        return null;
+      },
+      onSaved: (String value) {
+        if (value != null) {
+          _address += ', $value';
+        }
+      },
+    );
+  }
+
+  Widget _buildCityField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelStyle: TextStyle(color: kDarkBlue),
+        labelText: 'Ciudad',
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kDarkBlue),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+      ),
+      cursorColor: kYellow,
+      validator: (String value) {
+//        if (value.isEmpty) {
+//          return 'Código Postal es obligatoria';
+//        }
+        return null;
+      },
+      onSaved: (String value) {
+        if (value != null) {
+          _address += ', $value';
+        }
       },
     );
   }
@@ -416,6 +480,8 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
                   _buildEmailField(),
                   _buildURLField(),
                   _buildAddressField(),
+                  _buildPostCodeField(),
+                  _buildCityField(),
                   SizedBox(
                     height: 50,
                   ),
