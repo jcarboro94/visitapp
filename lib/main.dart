@@ -85,6 +85,36 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Widget showUrlCard() {
+    if (_url != '') {
+      return Card(
+        color: Colors.white,
+        margin: EdgeInsets.all(20),
+        child: ListTile(
+          leading: Icon(
+            Icons.web,
+            color: kDarkBlue,
+          ),
+          title: Text(
+            _url,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'SourceSansPro',
+                fontSize: 15,
+                color: kDarkBlue),
+          ),
+        ),
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+        child: SizedBox(
+          height: 0.00000001,
+        ),
+      );
+    }
+  }
+
 //  static GlobalKey previewContainer = GlobalKey();
 //  var scr = new GlobalKey();
 
@@ -123,6 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
     vCard.middleName = '';
     vCard.lastName = _lastName;
     vCard.organization = '';
+    vCard.note =
 //    vCard.photo.embedFromFile(_imagePath);
 //    if (_imagePath != '') {
 //      vCard.photo.embedFromFile(
@@ -131,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //        'PNG');*/
 //          ;
 //    }
-    vCard.workAddress.label = _address;
+        vCard.workAddress.label = _address;
     vCard.workEmail = _email;
     vCard.photo.attachFromUrl(_imagePath, 'PNG');
     vCard.workPhone = _phoneNumber;
@@ -142,6 +173,34 @@ class _HomeScreenState extends State<HomeScreen> {
     print('THE VCARD IS:');
     print(vCard.getFormattedString());
     return vCard.getFormattedString();
+  }
+
+  VCard generateVcardFinal() {
+    var vCard = VCard();
+    vCard.firstName = _firstName;
+    vCard.middleName = '';
+    vCard.lastName = _lastName;
+    vCard.organization = '';
+    vCard.note =
+//    vCard.photo.embedFromFile(_imagePath);
+//    if (_imagePath != '') {
+//      vCard.photo.embedFromFile(
+//              _imagePath) /*attachFromUrl(
+//        'https://www.activspaces.com/wp-content/uploads/2019/01/ActivSpaces-Logo_Dark.png',
+//        'PNG');*/
+//          ;
+//    }
+        vCard.workAddress.label = _address;
+    vCard.workEmail = _email;
+    vCard.photo.attachFromUrl(_imagePath, 'PNG');
+    vCard.workPhone = _phoneNumber;
+//    vCard.birthday = DateTime.now();
+    vCard.jobTitle = _description;
+    vCard.url = _url;
+//    vCard.note = 'Notes on contact';
+    print('THE VCARD IS:');
+    print(vCard.getFormattedString());
+    return vCard;
   }
 
   getPreferences() async {
@@ -179,6 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
+//                margin: EdgeInsets.only(top: 50),
                 decoration: BoxDecoration(color: kDarkBlue),
                 accountName: Text(_name),
                 accountEmail: Text(_email),
@@ -202,9 +262,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 print(contactDetails);
                 if (contactDetails != null) {
                   setState(() {
-                    _name = contactDetails[0];
+//                    _name = contactDetails[0];
                     _firstName = contactDetails[1];
                     _lastName = contactDetails[2];
+                    _name = '$_firstName $_lastName';
                     _description = contactDetails[3];
                     _phoneNumber = contactDetails[4];
                     _email = contactDetails[5];
@@ -224,9 +285,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => CompartirPage(
-                      generateVcard(),
-                    ),
+                    builder: (BuildContext context) =>
+                        CompartirPage(generateVcard(), generateVcardFinal()),
                   ),
                 );
               },
@@ -363,23 +423,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                Card(
-                    color: Colors.white,
-                    margin: EdgeInsets.all(20),
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.web,
-                        color: kDarkBlue,
-                      ),
-                      title: Text(
-                        _url,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'SourceSansPro',
-                            fontSize: 15,
-                            color: kDarkBlue),
-                      ),
-                    )),
+                showUrlCard(),
+//                Card(
+//                    color: Colors.white,
+//                    margin: EdgeInsets.all(20),
+//                    child: ListTile(
+//                      leading: Icon(
+//                        Icons.web,
+//                        color: kDarkBlue,
+//                      ),
+//                      title: Text(
+//                        _url,
+//                        style: TextStyle(
+//                            fontWeight: FontWeight.bold,
+//                            fontFamily: 'SourceSansPro',
+//                            fontSize: 15,
+//                            color: kDarkBlue),
+//                      ),
+//                    )),
                 Card(
                     color: Colors.white,
                     margin: EdgeInsets.only(left: 20, right: 20),

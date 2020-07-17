@@ -232,7 +232,7 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
     return TextFormField(
       decoration: InputDecoration(
         labelStyle: TextStyle(color: kDarkBlue),
-        labelText: 'Telefono',
+        labelText: 'Teléfono',
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: kDarkBlue),
         ),
@@ -356,7 +356,7 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
   Widget _buildMainColorField() {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: 'Telefono',
+        labelText: 'Teléfono',
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: kDarkBlue),
         ),
