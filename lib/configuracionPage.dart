@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:visitapp/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfiguracionPage extends StatefulWidget {
   @override
@@ -9,6 +10,8 @@ class ConfiguracionPage extends StatefulWidget {
 }
 
 class _ConfiguracionPageState extends State<ConfiguracionPage> {
+  String imageAddress;
+
   File _image;
   final picker = ImagePicker();
 
@@ -17,8 +20,25 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
 
     setState(() {
       _image = File(pickedFile.path);
+      imageAddress = pickedFile.path;
       print(pickedFile.path);
     });
+  }
+
+  setPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('name', _name);
+    prefs.setString('firstName', _firstName);
+    prefs.setString('lastName', _lastName);
+    prefs.setString('description', _description);
+    prefs.setString('phoneNumber', _phoneNumber);
+    prefs.setString('email', _email);
+    prefs.setString('url', _url);
+    prefs.setString('address', _address);
+    print('THE IMAGE PATH IS!!!');
+
+    print(imageAddress);
+    prefs.setString('imagePath', imageAddress);
   }
 
   String _name;
@@ -57,18 +77,24 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
   Widget _buildImageField() {
     return GestureDetector(
       child: _image == null
-          ? CircleAvatar(
-              child: Icon(Icons.add_a_photo),
-              backgroundColor: kDarkBlue,
-              radius: 50,
+          ? Hero(
+              tag: 'image',
+              child: CircleAvatar(
+                child: Icon(Icons.add_a_photo),
+                backgroundColor: kDarkBlue,
+                radius: 50,
+              ),
             )
-          : CircleAvatar(
+          : Hero(
+              tag: 'image',
+              child: CircleAvatar(
 //              child: Image.file(_image),
 //              backgroundImage: NetworkImage(
 //                  'https://media-exp1.licdn.com/dms/image/C5603AQFh6ytryTUsaA/profile-displayphoto-shrink_200_200/0?e=1598486400&v=beta&t=vu4Bz7Gpo2zSfAaLH4eWL6BlxfqU6Uz1MB8aM-okVKk'),
-              backgroundImage: AssetImage(_image.path),
-              radius: 50,
-              backgroundColor: kDarkBlue,
+                backgroundImage: AssetImage(_image.path),
+                radius: 50,
+                backgroundColor: kDarkBlue,
+              ),
             ),
       onTap: () {
         print('I HAVE '
@@ -80,7 +106,20 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
 
   Widget _buildNameField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Nombre'),
+      decoration: InputDecoration(
+        labelStyle: TextStyle(color: kDarkBlue),
+        labelText: 'Nombre',
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kDarkBlue),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+      ),
+      cursorColor: kYellow,
       validator: (String value) {
         if (value.isEmpty) {
           return 'Nombre es obligatorio';
@@ -110,9 +149,73 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
     );
   }
 
+  Widget _buildLastNameField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelStyle: TextStyle(color: kDarkBlue),
+        labelText: 'Apellidos',
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kDarkBlue),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+      ),
+      cursorColor: kYellow,
+      validator: (String value) {
+//        if (value.isEmpty) {
+//          return 'Nombre es obligatorio';
+//        }
+        return null;
+      },
+      onSaved: (String value) {
+//        _name = value;
+        _lastName = value == null ? "" : value;
+
+//        if (value == null){
+//
+//        }
+//        _lastName = value;
+//        var firstAndLast = value.split(" ");
+//        if (firstAndLast.length > 1) {
+//          _firstName = firstAndLast[0];
+//          firstAndLast.removeAt(0);
+//          _lastName = firstAndLast.join(" ");
+//        } else {
+//          _firstName = firstAndLast[0];
+//          _lastName = '';
+//        }
+
+//        if (value.split("\\w+").length > 1) {
+//          _firstName = value.substring(value.lastIndexOf(" ") + 1);
+//          _lastName = value.substring(0, value.lastIndexOf(' '));
+//        } else {
+//          _firstName = value;
+//          _lastName = '';
+//        }
+      },
+    );
+  }
+
   Widget _buildDescriptionField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Descripción'),
+      decoration: InputDecoration(
+        labelStyle: TextStyle(color: kDarkBlue),
+        labelText: 'Descripción',
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kDarkBlue),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+      ),
+      cursorColor: kYellow,
       validator: (String value) {
         if (value.isEmpty) {
           return 'La descripción es obligatoria';
@@ -127,8 +230,21 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
 
   Widget _buildPhoneNumberField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Telefono'),
+      decoration: InputDecoration(
+        labelStyle: TextStyle(color: kDarkBlue),
+        labelText: 'Telefono',
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kDarkBlue),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+      ),
       keyboardType: TextInputType.number,
+      cursorColor: kYellow,
       validator: (String value) {
         int phoneNumber = int.tryParse(value);
         if (value.isEmpty) {
@@ -147,8 +263,21 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
 
   Widget _buildEmailField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Correo electrónico'),
+      decoration: InputDecoration(
+        labelStyle: TextStyle(color: kDarkBlue),
+        labelText: 'Correo electrónico',
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kDarkBlue),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+      ),
       keyboardType: TextInputType.emailAddress,
+      cursorColor: kYellow,
 //      textInputAction: TextInputAction.continueAction,
       validator: (String value) {
         if (value.isEmpty) {
@@ -169,12 +298,25 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
 
   Widget _buildURLField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Página Web'),
+      decoration: InputDecoration(
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kDarkBlue),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+        labelStyle: TextStyle(color: kDarkBlue),
+        labelText: 'Página Web',
+      ),
+      cursorColor: kYellow,
       keyboardType: TextInputType.url,
       validator: (String value) {
-        if (value.isEmpty) {
-          return 'Página web es obligatoria';
-        }
+//        if (value.isEmpty) {
+//          return 'Página web es obligatoria';
+//        }
         return null;
       },
       onSaved: (String value) {
@@ -185,7 +327,20 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
 
   Widget _buildAddressField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Dirección'),
+      decoration: InputDecoration(
+        labelStyle: TextStyle(color: kDarkBlue),
+        labelText: 'Dirección',
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kDarkBlue),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+      ),
+      cursorColor: kYellow,
       validator: (String value) {
         if (value.isEmpty) {
           return 'Dirección es obligatoria';
@@ -200,7 +355,18 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
 
   Widget _buildMainColorField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Telefono'),
+      decoration: InputDecoration(
+        labelText: 'Telefono',
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kDarkBlue),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: kYellow),
+        ),
+      ),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Teléfono es obligatorio';
@@ -232,7 +398,7 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            color: Colors.white,
+//            color: Colors.white,
             margin: EdgeInsets.all(24),
             child: Form(
               key: _formKey,
@@ -240,47 +406,56 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   _buildImageField(),
+                  SizedBox(
+                    height: 20,
+                  ),
                   _buildNameField(),
+                  _buildLastNameField(),
                   _buildDescriptionField(),
                   _buildPhoneNumberField(),
                   _buildEmailField(),
                   _buildURLField(),
                   _buildAddressField(),
                   SizedBox(
-                    height: 100,
+                    height: 50,
                   ),
-                  RaisedButton(
-                    child: Text(
-                      'Guardar',
-                      style: TextStyle(color: kYellow, fontSize: 15),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    child: RaisedButton(
+                      child: Text(
+                        'Guardar',
+                        style: TextStyle(color: kYellow, fontSize: 15),
+                      ),
+                      color: kDarkBlue,
+                      onPressed: () {
+                        print('SAVED');
+                        if (!_formKey.currentState.validate()) {
+                          return;
+                        }
+                        _formKey.currentState.save();
+                        print(_name);
+                        print(_description);
+                        print(_phoneNumber);
+                        print(_email);
+                        print(_url);
+                        print(_address);
+
+                        List<String> list = List<String>();
+                        list.add(_name);
+                        list.add(_firstName);
+                        list.add(_lastName);
+                        list.add(_description);
+                        list.add(_phoneNumber);
+                        list.add(_email);
+                        list.add(_url);
+                        list.add(_address);
+                        list.add(_image.path);
+                        print('THE IMAGE PATH IS ${_image.path}');
+
+                        setPreferences();
+                        Navigator.pop(context, list);
+                      },
                     ),
-                    color: kDarkBlue,
-                    onPressed: () {
-                      print('SAVED');
-                      if (!_formKey.currentState.validate()) {
-                        return;
-                      }
-                      _formKey.currentState.save();
-                      print(_name);
-                      print(_description);
-                      print(_phoneNumber);
-                      print(_email);
-                      print(_url);
-                      print(_address);
-
-                      List<String> list = List<String>();
-                      list.add(_name);
-                      list.add(_firstName);
-                      list.add(_lastName);
-                      list.add(_description);
-                      list.add(_phoneNumber);
-                      list.add(_email);
-                      list.add(_url);
-                      list.add(_address);
-                      list.add(_image.path);
-
-                      Navigator.pop(context, list);
-                    },
                   )
                 ],
               ),

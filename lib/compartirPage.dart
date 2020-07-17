@@ -17,7 +17,7 @@ class CompartirPage extends StatelessWidget {
         title: Text('Compartir'),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
 //        crossAxisAlignment: CrossAxisAlignment.center,
 
         children: <Widget>[
@@ -36,6 +36,19 @@ class CompartirPage extends StatelessWidget {
           ) /*Image.network(
                 'https://images.samsung.com/is/image/samsung/p5/au/faq/os-pie-updates/QR-code.png')*/
               ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.85,
+            child: RaisedButton(
+              child: Text(
+                'Enviar',
+                style: TextStyle(color: kYellow, fontSize: 15),
+              ),
+              color: kDarkBlue,
+              onPressed: () {
+                print('I HAVE BEEN PRESSED');
+              },
+            ),
+          )
         ],
       ),
     );
